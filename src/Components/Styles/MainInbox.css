@@ -1,0 +1,9 @@
+#main-background{
+    background: rgb(202,202,207);
+    background: linear-gradient(90deg, rgba(202,202,207,1) 0%, rgba(16,43,4,1) 27%, rgba(98,82,40,1) 75%);
+    font-weight: bold;
+    color: lightgoldenrodyellow;
+    font-size: x-large;
+    height: available;
+    padding-left: 25%;
+}

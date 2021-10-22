@@ -1,0 +1,11 @@
+#email-list{
+    background-color: wheat;
+    width: 50%;
+    color: black;
+    border-color: darkolivegreen;
+    border-style: groove;
+    border-width: 20px;
+    height: min-content;
+
+}
+

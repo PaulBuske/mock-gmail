@@ -8,22 +8,16 @@ class ComposeView extends React.Component {
 
     render() {
         return (
-            <form>
+            <form onSubmit={(event) => this.props.onSendButtonClick(event)} >
 
-                <input type="text" name={"recipient"}/>
-                <input type="text" name={"subject"}/>
-                <input type="text" name={"message"}/>
-
-                //TODO Get this to pass into the send function
-                <input type={"submit"} value={"send"} onClick={(e) => {
-                    this.props.onSendButtonClick({
-                        sender: "Elliott and Paul",
-                        recipient: e.target.recipient.value,
-                        subject: e.target.subject.value,
-                        message: e.target.message.value
-                    })
-                }}/>
-                <button onClick={this.props.onReturnButtonClick}>Cancel</button>
+                To: <br/>
+                <input type="text" name={"recipient"}/><br/>
+                Subject: <br/>
+                <input type="text" name={"subject"}/><br/>
+                Message:<br/>
+                <input type="text" name={"message"}/> <br/>
+                <input type={"submit"} value={"send"}/>
+                <button id={"cancel-button"} onClick={this.props.onReturnButtonClick}>Cancel</button>
             </form>
 
         )

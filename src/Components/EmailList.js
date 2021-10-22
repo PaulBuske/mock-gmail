@@ -1,5 +1,6 @@
 import React from "react";
 import Email from "./Email";
+import "./Styles/EmailList.css"
 
 class EmailList extends React.Component {
 
@@ -22,7 +23,7 @@ class EmailList extends React.Component {
     render() {
         let emailList = this.buildEmailsList();
         return (
-            <div>
+            <div id={"email-list"}>
                 {emailList}
             </div>
         )

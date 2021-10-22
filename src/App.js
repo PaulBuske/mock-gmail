@@ -1,10 +1,8 @@
-import logo from './logo.svg';
 import './App.css';
 import MainInbox from './Components/MainInbox';
 import React from "react";
 import ComposeView from "./Components/ComposeView";
 import DetailedView from "./Components/DetailedView";
-import {isCompositeComponent} from "react-dom/test-utils";
 
 
 class App extends React.Component {
@@ -16,20 +14,36 @@ class App extends React.Component {
         this.setState({inboxEmails: JSONResponse});
     }
 
-    async sendEmails(email){
-        this.setState({sentEmail: email})
+    async getSearchedResults(event) {
+        console.log("I am the search query: " + event.target.query.value)
+        let url = "http://localhost:3001/search?query=" + event.target.query.value;
+        const response = await fetch(url);
+        const JSONResponse = await response.json();
+        this.setState({inboxEmails: JSONResponse});
+    }
+
+    async sendEmails(event){
+        const parsedEmail ={
+            sender: "PaulyG",
+            recipient: event.target.recipient.value,
+            subject: event.target.subject.value,
+            message: event.target.message.value
+        }
+
+        this.setState({sentEmail: event})
         let url = "http://localhost:3001/send"
         const response = await fetch(url, {
             method: "POST",
             mode: "cors",
+            cache: "no-cache",
+            credentials: "same-origin",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(email)
+            body: JSON.stringify(parsedEmail)
         });
-
-        return response.json();
-
+        const jsonResponse =  await response.json();
+        return jsonResponse;
     }
 
     componentDidMount() {
@@ -50,9 +64,17 @@ class App extends React.Component {
         this.setState({isComposingEmail: true});
     }
 
-    handleSendButtonClick(email){
-        this.sendEmails(email);
+    handleSendButtonClick(event){
+        this.sendEmails(event);
     }
+
+
+    handleSearchEmailButtonClicked(event) {
+        event.preventDefault();
+        this.getSearchedResults(event);
+
+    }
+
 
     //TODO create a search method that will search emails found inside of inbox by subject
 
@@ -65,28 +87,29 @@ class App extends React.Component {
             inboxEmails: [],
             currentEmail: {},
             isComposingEmail: false,
-            sentEmail: {}
-
+            sentEmail: {},
+            query: ''
         }
     }
 
 
     renderPage() {
-        console.log(this.state.isComposingEmail)
+
         if (this.state.isComposingEmail === false && !this.state.currentEmail.message) {
-            console.log(this.state.sentEmail)
             return <MainInbox
+
                 className="main-inbox"
                 inboxEmails={this.state.inboxEmails}
                 onClickedEmail={(email) => this.handleClickedEmail(email)}
                 onComposeButtonClicked={() => this.handleComposedButtonClicked()}
+                onSearchEmailButton={(event) => this.handleSearchEmailButtonClicked(event)}
             />
         }
         if (this.state.isComposingEmail === true) {
             return <ComposeView
             className={"compose-new-email-view"}
             onReturnButtonClick={() => this.handleReturnToInboxButton()}
-            onSendButtonClick={(email) => this.handleSendButtonClick(email)}
+            onSendButtonClick={(event) => this.handleSendButtonClick(event)}
             />
         }
         if (this.state.currentEmail) {
@@ -105,6 +128,6 @@ class App extends React.Component {
             </div>
         )
     }
-}
 
+}
 export default App;

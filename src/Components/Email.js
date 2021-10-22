@@ -1,4 +1,5 @@
 import React from "react";
+import "./Styles/Email.css"
 
 class Email extends React.Component {
 
@@ -7,7 +8,7 @@ class Email extends React.Component {
     }
 
     render() {
-        return <div>
+        return <div id={"email"}>
             <div
                 onClick={
                     (e) =>{
